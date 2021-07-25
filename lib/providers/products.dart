@@ -54,7 +54,7 @@ class Products with ChangeNotifier {
     return _items.firstWhere((prod) => prod.id == id);
   }
 
-  void addProduct(Product product) async {
+  Future<void> addProduct(Product product) async {
     try {
       final res = await ProductsApi.addProduct(product);
       final newProduct = Product(
@@ -65,10 +65,11 @@ class Products with ChangeNotifier {
         imageUrl: product.imageUrl,
       );
       _items.insert(0, newProduct);
+      notifyListeners();
+      return Future.value(res);
     } catch (e) {
       print('Error: $e');
     }
-    notifyListeners();
   }
 
   void updateProduct(String id, Product newProduct) {
