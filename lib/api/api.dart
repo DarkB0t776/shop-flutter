@@ -6,18 +6,23 @@ class Api {
   static const BASE_URL =
       'flutter-shop-53e34-default-rtdb.europe-west1.firebasedatabase.app';
 
-  static Future<http.StreamedResponse> sendRequest(
+  static Future<http.Response> sendRequest(
     String method,
     String endpoint, {
     String body: '',
   }) async {
-    final url = Uri.https(BASE_URL, endpoint);
-    final provider = http.Request(method, url);
-    if (method == 'post') {
-      provider.body = body;
-    }
+    try {
+      final url = Uri.https(BASE_URL, endpoint);
+      final provider = http.Request(method, url);
+      if (method == 'post') {
+        provider.body = body;
+      }
 
-    var res = await provider.send();
-    return res;
+      var streamedResponse = await provider.send();
+      var res = http.Response.fromStream(streamedResponse);
+      return res;
+    } catch (e) {
+      throw (e);
+    }
   }
 }

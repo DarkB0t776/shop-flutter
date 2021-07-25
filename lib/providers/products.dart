@@ -1,4 +1,7 @@
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
+import 'package:http/http.dart' as http;
 
 import 'package:shop/providers/product.dart';
 import 'package:shop/api/products_api.dart';
@@ -55,7 +58,7 @@ class Products with ChangeNotifier {
     try {
       final res = await ProductsApi.addProduct(product);
       final newProduct = Product(
-        id: DateTime.now().toString(),
+        id: json.decode(res.body)['name'],
         title: product.title,
         description: product.description,
         price: product.price,

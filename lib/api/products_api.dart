@@ -6,7 +6,7 @@ import 'package:shop/providers/product.dart';
 
 class ProductsApi extends Api {
   final apiInstance = new Api();
-  static Future<http.StreamedResponse> addProduct(Product product) async {
+  static Future<http.Response> addProduct(Product product) async {
     final url = Uri.https(Api.BASE_URL, '/products.json');
     try {
       final body = json.encode({
