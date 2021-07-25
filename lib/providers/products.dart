@@ -68,7 +68,7 @@ class Products with ChangeNotifier {
       notifyListeners();
       return Future.value(res);
     } catch (e) {
-      print('Error: $e');
+      throw e;
     }
   }
 

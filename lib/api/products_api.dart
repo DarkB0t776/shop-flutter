@@ -7,7 +7,6 @@ import 'package:shop/providers/product.dart';
 class ProductsApi extends Api {
   final apiInstance = new Api();
   static Future<http.Response> addProduct(Product product) async {
-    final url = Uri.https(Api.BASE_URL, '/products.json');
     try {
       final body = json.encode({
         'title': product.title,
@@ -19,7 +18,7 @@ class ProductsApi extends Api {
       var res = await Api.sendRequest('post', '/products.json', body: body);
       return res;
     } catch (e) {
-      throw (e);
+      throw e;
     }
   }
 }
