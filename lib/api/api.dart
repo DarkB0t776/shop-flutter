@@ -7,8 +7,8 @@ class Api {
       'flutter-shop-53e34-default-rtdb.europe-west1.firebasedatabase.app';
 
   static Future<http.Response> sendRequest(
-    String method,
-    String endpoint, {
+    String method, {
+    String endpoint: '',
     String body: '',
   }) async {
     try {

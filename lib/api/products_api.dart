@@ -15,7 +15,17 @@ class ProductsApi extends Api {
         'imageUrl': product.imageUrl,
         'isFavorite': product.isFavorite,
       });
-      var res = await Api.sendRequest('post', '/products.json', body: body);
+      var res =
+          await Api.sendRequest('post', endpoint: '/products.json', body: body);
+      return res;
+    } catch (e) {
+      throw e;
+    }
+  }
+
+  static Future<http.Response> fetchProducts() async {
+    try {
+      var res = await Api.sendRequest('get', endpoint: '/products.json');
       return res;
     } catch (e) {
       throw e;
