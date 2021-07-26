@@ -14,9 +14,8 @@ class Api {
     try {
       final url = Uri.https(BASE_URL, endpoint);
       final provider = http.Request(method, url);
-      if (method == 'post') {
-        provider.body = body;
-      }
+
+      provider.body = body;
 
       var streamedResponse = await provider.send();
       var res = http.Response.fromStream(streamedResponse);

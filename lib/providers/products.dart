@@ -2,6 +2,7 @@ import 'dart:convert';
 
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
+import 'package:shop/models/http_exception.dart';
 
 import 'package:shop/providers/product.dart';
 import 'package:shop/api/products_api.dart';
@@ -96,19 +97,36 @@ class Products with ChangeNotifier {
     }
   }
 
-  void updateProduct(String id, Product newProduct) {
+  Future<void> updateProduct(String id, Product newProduct) async {
     final prodIdx = _items.indexWhere((prod) => prod.id == id);
 
     if (prodIdx >= 0) {
-      _items[prodIdx] = newProduct;
-      notifyListeners();
+      try {
+        await ProductsApi.updateProduct(newProduct);
+        _items[prodIdx] = newProduct;
+        notifyListeners();
+      } catch (e) {
+        print('error: $e');
+        throw e;
+      }
     } else {
       print("...");
     }
   }
 
-  void deleteProduct(String id) {
-    _items.removeWhere((prod) => prod.id == id);
+  Future<void> deleteProduct(String id) async {
+    final existingProdIdx = _items.indexWhere((prod) => prod.id == id);
+    Product? existingProduct = _items[existingProdIdx];
+
+    _items.removeAt(existingProdIdx);
     notifyListeners();
+
+    final res = await ProductsApi.deleteProduct(id);
+    if (res.statusCode >= 400) {
+      _items.insert(existingProdIdx, existingProduct);
+      notifyListeners();
+      throw HttpException('Something went wrong!');
+    }
+    existingProduct = null;
   }
 }
